@@ -5,23 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sheep Clicker</title>
     <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="https://use.typekit.net/gge4lkp.css">
 
 </head>
-<body style="background-color: rgb(115, 33, 18);">
+<body style="background-color: rgb(115, 33, 18); zoom:90%;">
     
 <div class="farm">
-    <div><img class="sheepimg zoom-sheep" src="images/sheep_basic.png"></div>
+    <div class="farmhandsans wallet">Wool Wallet:</div>
+    <div><img class="sheepimg zoom-sheep graze" src="images/sheep_basic.png"></div>
 </div>
 
 <div class="shop" id="greeting">
-    <h1 id="farmTitle">What is your name?</h1>
+    <div><img class="info" src="images/info.png"></div>
+    <h1 id="farmTitle" class="farmhandreg">What is your name?</h1>
 
     <div id="nameForm">
         <input type="text" id="nameInput" placeholder="Your name" />
         <button id="saveName">Save Name</button>
     </div>
 
-    <div>
+
+
+    <div class="farmhandsans">
         <table>
             <tr>
                 <th>Buy</th>
@@ -54,11 +59,6 @@
                 <td>320</td>
             </tr>
         </table>
-    </div>
-
-    <div>
-        <h4>Wool Wallet: 0</h4>
-        <h4>Wool Goal: 0/1000</h4>
     </div>
 
 </div>

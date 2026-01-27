@@ -1,41 +1,61 @@
+.farmhandreg{
+  font-family: "farmhand", serif;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 3px;
+  font-size: 60px;
+}
+
+.farmhandsans{
+  font-family: "farmhand-sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 30px;
+  letter-spacing: 2px;
+}
 
 .sheepimg {
   width: 200px;
   padding-top: 20vw;
-  padding-left: 15vw;
   overflow: hidden;
 }
 
 .zoom-sheep {
-  width: 30%;
-  transition: transform 0.3s ease;
   cursor: pointer;
-  transform-origin: center bottom;
 }
 
-.zoom-sheep:hover {
-  transform: scale(1.05);
+.wallet {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background-color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  width: fit-content;
 }
 
-.zoom-sheep:active {
-  transform: scale(0.95);
+
+body{
+  background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8-BVuqpmdlTXkg4XaFeF5SvBf9uu8sE3tdw&s);
 }
 
 .farm {
     background-image: url("https://i.pinimg.com/736x/8b/98/f6/8b98f650ade5eb2d95213c94d0018012.jpg");
     position: fixed;
-    left: 15; 
+    top:2vw;
+    left:5vw;
     width: 50vw; 
     height: 100vh; 
     background-size: cover; 
     background-repeat: no-repeat;
     background-position: center;
-    z-index: -1
+    z-index: -1;
+    border-radius: 10px;
 }
 
 .shop {
     position: fixed;
-    left: 55vw; 
+    left: 60vw; 
     width: 50vw; 
     height: 100vh;  
     z-index: -1;
@@ -50,4 +70,76 @@
 th, td {
   border: 1px solid white;
   padding:10px;
+}
+
+button {
+  background-color: #ffffff; 
+  border: none;
+  color: rgb(0, 0, 0);
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block; 
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 25px; 
+}
+
+button:hover {
+    background-color: #c1c1c1; 
+}
+
+button:active {
+    background-color: #a8a7a7; 
+}
+
+.info {
+  position: absolute;
+  top: 20px;
+  right: 90px;
+  width: 40px;
+  cursor: pointer;
+  z-index: 5;
+  padding:5px;
+  background-color: white;
+  border-radius: 20%;
+}
+
+.info:hover {
+  background-color: #d5d2d2;
+}
+
+.info:active {
+  background-color: #a7a7a7;
+}
+
+.graze {
+  position: relative;
+  animation: sheepGraze 8s infinite linear;
+}
+
+@keyframes sheepGraze {
+  0% {
+    left: 30vw;
+    transform: scaleX(1);
+  }
+
+  49% {
+    transform: scaleX(1);
+  }
+
+  50% {
+    left: 5vw;
+    transform: scaleX(-1); 
+  }
+
+  99% {
+    transform: scaleX(-1);
+  }
+
+  100% {
+    left: 30vw;
+    transform: scaleX(1);
+  }
 }
