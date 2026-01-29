@@ -40,10 +40,14 @@ document.getElementById("saveName").addEventListener("click", () => {
 const woolDisplay = document.getElementById("woolDisplay");
 const sheep = document.getElementById("sheep");
 
+let woolPerClick = 1;
+
 fetch("/api/game")
     .then(res => res.json())
     .then(game => {
         woolDisplay.textContent = game.wool;
+        sheep.src = `images/sheep_${game.sheep}.png`;
+        woolPerClick = game.woolPerClick;
     });
 
 sheep.addEventListener("click", () => {
@@ -53,6 +57,7 @@ sheep.addEventListener("click", () => {
             woolDisplay.textContent = game.wool;
         });
 });
+
 function buySheep(cost, power, type) {
     fetch("/api/upgrade", {
         method: "PUT",
@@ -80,3 +85,23 @@ function resetGame() {
             sheep.src = "images/sheep_basic.png";
         });
 }
+
+document.getElementById("fluffyBtn").addEventListener("click", () => {
+    buySheep(20, 10, "fluffy");
+});
+
+document.getElementById("silverBtn").addEventListener("click", () => {
+    buySheep(40, 20, "silver");
+});
+
+document.getElementById("goldenBtn").addEventListener("click", () => {
+    buySheep(80, 40, "golden");
+});
+
+document.getElementById("jesterBtn").addEventListener("click", () => {
+    buySheep(160, 80, "jester");
+});
+
+document.getElementById("kingBtn").addEventListener("click", () => {
+    buySheep(320, 160, "king");
+});
