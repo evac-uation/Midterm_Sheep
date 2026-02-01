@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/evac-uation/Midterm_Sheep#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.7",
     "express": "^5.2.1"
   }
 }

@@ -20,49 +20,31 @@
 <div class="shop" id="greeting">
     <div><img class="info" src="images/info.png"></div>
     <h1 id="farmTitle" class="farmhandreg">What is your name?</h1>
+    <p>
+        <button id="resetName">Reset Name</button>
+        <button id="deletegame" onclick="deleteCurrentGame();">Delete My Game</button>
+    </p>
 
     <div id="nameForm">
         <input type="text" id="nameInput" placeholder="Your name" />
         <button id="saveName">Save Name</button>
     </div>
-
-
-
     <div class="farmhandsans">
         <table>
-            <tr>
-                <th>Buy</th>
-                <th>Wool Per Click</th>
-                <th>Cost In Wool</th>
-            </tr>
-            <tr>
-                <td><button id="fluffyBtn">Fluffy Sheep</button></td>
-                <td>10</td>
-                <td>20</td>
-            </tr>
-            <tr>
-                <td><button id="silverBtn">Silver Sheep</button></td>
-                <td>20</td>
-                <td>40</td>
-            </tr>
-            <tr>
-                <td><button id="goldenBtn">Golden Sheep</button></td>
-                <td>40</td>
-                <td>80</td>
-            </tr>
-            <tr>
-                <td><button id="jesterBtn">Jester Sheep</button></td>
-                <td>80</td>
-                <td>160</td>
-            </tr>
-            <tr>
-                <td><button id="kingBtn">King Sheep</button></td>
-                <td>160</td>
-                <td>320</td>
-            </tr>
+             <thead>
+                <tr>
+                    <th>Buy</th>
+                    <th>Wool Per Click</th>
+                    <th>Cost In Wool</th>
+                </tr>
+            </thead>
+            <tbody id="sheepTable"/>
         </table>
     </div>
 
+    <p>Sheep: <span id="sheepDisplay"/></p>
+    <p>Per Click: <span id="perClickDisplay"/></p>
+    <p>Collections: <span id="collectionDisplay"/></p>
 </div>
 
 

@@ -1,50 +1,104 @@
 const express = require("express");
+const cookieParser = require('cookie-parser');
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
 app.use(express.static("public"));
+app.use(cookieParser());
 
+const sheepProperties = [
+    {
+        name: "Fluffy Sheep",
+        woolPerClick: 10,
+        cost: 20
+    },
+    {
+        name: "Silver Sheep",
+        woolPerClick: 20,
+        cost: 40
+    },
+    {
+        name: "Golden Sheep",
+        woolPerClick: 40,
+        cost: 80
+    },
+    {
+        name: "Jester Sheep",
+        woolPerClick: 80,
+        cost: 160
+    },
+    {
+        name: "King Sheep",
+        woolPerClick: 160,
+        cost: 320
+    },
+];
 
-let game = {
-    wool: 0,
-    woolPerClick: 1,
-    sheep: "basic"
-};
+const games = {};
+
+app.get("/api/sheep", (req, res) => {
+    res.json(sheepProperties);
+});
 
 app.get("/api/game", (req, res) => {
-    res.json(game);
+    const username = req.cookies.username;
+    if (username in games) {
+        // Exisiting user
+        res.json(games[username]);
+    } else {
+        // New user
+        var game = {wool: 0, collections: 0, sheep: sheepProperties[0]};
+        games[username] = game;
+        res.json(game);
+    }  
 });
 
-app.post("/api/click", (req, res) => {
-    game.wool += game.woolPerClick;
-    res.json(game);
-});
-
-app.put("/api/upgrade", (req, res) => {
-    const { cost, woolPerClick, sheep } = req.body;
-
-    if (game.wool < cost) {
-        return res.status(400).json({ error: "Not enough wool" });
+app.put("/api/collect", (req, res) => {
+    const username = req.cookies.username;
+    if (username in games) {
+        var game = games[username];
+        game.wool += game.sheep.woolPerClick;
+        game.collections++;
+        res.json(game);
+        return;
     }
-
-    game.wool -= cost;
-    game.woolPerClick = woolPerClick;
-    game.sheep = sheep;
-
-    res.json(game);
+    res.sendStatus(404);
 });
 
-app.delete("/api/game", (req, res) => {
-    game = {
-        wool: 0,
-        woolPerClick: 1,
-        sheep: "basic"
-    };
-    res.json(game);
+app.post("/api/buy/:index", (req, res) => {
+    const username = req.cookies.username;
+    if (username in games) {
+        var game = games[username];
+        var sheep = sheepProperties[req.params.index];
+        if (game.wool >= sheep.cost) {
+            game.wool -= sheep.cost;
+            game.sheep = sheep;
+            res.json(game);
+        } else {
+            res.status(400).json({message: `Insufficient wool to buy ${sheep.name}`});
+        }
+        return;
+    }
+    res.sendStatus(404);  
 });
 
+app.get("/api/reset", (req, res) => {
+    Object.keys(games).forEach(key => {
+        delete games[key];
+    });
+    res.sendStatus(200);
+});
+
+app.delete("/api/deletegame", (req, res) => {
+    const username = req.cookies.username;
+    if (username in games) {
+        delete games[username];
+    }
+    res.sendStatus(200);
+});
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
+

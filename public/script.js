@@ -20,12 +20,31 @@ function setCookie(name, value, days) {
 
 const savedName = getCookie("username");
 const farmTitle = document.getElementById("farmTitle");
+const resetName = document.getElementById("resetName");
+const deleteGame = document.getElementById("deletegame");
 const nameInput = document.getElementById("nameInput");
 const nameForm = document.getElementById("nameForm");
+
+var sheepProperties = [];
+var user = {}
+
+const woolDisplay = document.getElementById("woolDisplay");
+const sheepDisplay = document.getElementById("sheepDisplay");
+const perClickDisplay = document.getElementById("perClickDisplay");
+const collectionDisplay = document.getElementById("collectionDisplay");
+const sheep = document.getElementById("sheep");
 
 if (savedName) {
     farmTitle.textContent = `${savedName}'s Farm`;
     nameForm.style.display = "none";
+    resetName.style.display = "block";
+    deleteGame.style.display = "block";
+    loadGame();
+} else {
+    nameForm.style.display = "block";
+    resetName.style.display = "none";
+    deleteGame.style.display = "none";
+    woolDisplay.textContent = "0";
 }
 
 document.getElementById("saveName").addEventListener("click", () => {
@@ -35,73 +54,76 @@ document.getElementById("saveName").addEventListener("click", () => {
     setCookie("username", nameValue, 30);
     farmTitle.textContent = `${nameValue}'s Farm`;
     nameForm.style.display = "none";
+    resetName.style.display = "block";
+    deleteGame.style.display = "block";
+    loadGame();
 });
 
-const woolDisplay = document.getElementById("woolDisplay");
-const sheep = document.getElementById("sheep");
+resetName.addEventListener("click", () => {
+    setCookie("username", '');
+    nameForm.style.display = "block";
+    resetName.style.display = "none";
+    window.location.reload();
+});
 
-let woolPerClick = 1;
+var game = null;
 
-fetch("/api/game")
-    .then(res => res.json())
-    .then(game => {
-        woolDisplay.textContent = game.wool;
-        sheep.src = `images/sheep_${game.sheep}.png`;
-        woolPerClick = game.woolPerClick;
+async function loadSheep() {        
+    const response = await fetch('/api/sheep');
+    const data = await response.json();
+    var tableHtml = '';
+    data.forEach((item, index) => {
+        const rowHtml = `<tr><td><button onclick = "buySheep(${index})">${item.name}</button></td><td>${item.woolPerClick}</td><td>${item.cost}</td></tr>`;
+        tableHtml += rowHtml;
     });
+    const tableBody = document.getElementById('sheepTable');
+    tableBody.innerHTML = tableHtml;
+}
 
-sheep.addEventListener("click", () => {
-    fetch("/api/click", { method: "POST" })
-        .then(res => res.json())
-        .then(game => {
-            woolDisplay.textContent = game.wool;
-        });
-});
+async function loadGame() {        
+    const response = await fetch('/api/game');
+    const data = await response.json();
+    game = data;
+    woolDisplay.textContent = data.wool;
+    sheepDisplay.textContent = data.sheep.name;
+    perClickDisplay.textContent = data.sheep.woolPerClick;
+    collectionDisplay.textContent = data.collections;
+}
 
-function buySheep(cost, power, type) {
-    fetch("/api/upgrade", {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            cost: cost,
-            woolPerClick: power,
-            sheep: type
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
+async function deleteCurrentGame() {
+    const response = await fetch("/api/deletegame", { method: "DELETE"});
+    setCookie("username", '');
+    nameForm.style.display = "block";
+    resetName.style.display = "none";
+    deleteGame.style.display = "none";
+    window.location.reload();
+}
+
+
+async function collectWool() {
+    const response = await fetch("/api/collect", { method: "PUT"});
+    if (response.status === 200) {
+        const data = await response.json();
+        game = data;
         woolDisplay.textContent = data.wool;
-        sheep.src = `images/sheep_${data.sheep}.png`;
-    });
+        collectionDisplay.textContent = data.collections;
+    }
 }
 
-function resetGame() {
-    fetch("/api/game", { method: "DELETE" })
-        .then(res => res.json())
-        .then(data => {
-            woolDisplay.textContent = data.wool;
-            sheep.src = "images/sheep_basic.png";
-        });
+sheep.addEventListener("click", collectWool);
+
+async function buySheep(index) {
+    const response = await fetch(`/api/buy/${index}`, { method: "POST"});
+    if (response.status === 200) {
+        const data = await response.json();
+        game = data;
+        woolDisplay.textContent = data.wool
+        sheepDisplay.textContent = data.sheep.name;
+        perClickDisplay.textContent = data.sheep.woolPerClick;
+    } else if (response.status === 400) {
+        const data = await response.json();
+        alert(data.message);
+    }
 }
 
-document.getElementById("fluffyBtn").addEventListener("click", () => {
-    buySheep(20, 10, "fluffy");
-});
-
-document.getElementById("silverBtn").addEventListener("click", () => {
-    buySheep(40, 20, "silver");
-});
-
-document.getElementById("goldenBtn").addEventListener("click", () => {
-    buySheep(80, 40, "golden");
-});
-
-document.getElementById("jesterBtn").addEventListener("click", () => {
-    buySheep(160, 80, "jester");
-});
-
-document.getElementById("kingBtn").addEventListener("click", () => {
-    buySheep(320, 160, "king");
-});
+loadSheep();
