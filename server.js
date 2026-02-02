@@ -10,6 +10,12 @@ app.use(cookieParser());
 //Properties of all the different kinds of sheep
 const sheepProperties = [
     {
+        name: "Basic Sheep",
+        woolPerClick: 1,
+        cost: 0,
+        image: 'sheep_basic.png',
+    },
+    {
         name: "Fluffy Sheep",
         woolPerClick: 10,
         cost: 20,
@@ -64,7 +70,11 @@ app.get("/api/game", (req, res) => {
         res.json(games[username]);
     } else {
         // New user
-        var game = {wool: 0, collections: 0, sheep: sheepProperties[0]};
+        var game = {
+            wool: 0, 
+            collections: 0, 
+            sheep: sheepProperties[0]
+        };
         games[username] = game;
         res.json(game);
     }  
