@@ -43,6 +43,10 @@ const sheep = document.getElementById("sheep");
 
 if (difficulty == 'hard') {
     sheep.style.scale=0.5;
+    document.getElementById("hard").checked = true;
+} else {
+    sheep.style.scale=1;
+    document.getElementById("normal").checked = true;
 }
 
 if (savedName) {
@@ -139,6 +143,7 @@ async function buySheep(index) {
         woolDisplay.textContent = data.wool
         sheepDisplay.textContent = data.sheep.name;
         perClickDisplay.textContent = data.sheep.woolPerClick;
+        sheep.src=`images/${data.sheep.image}`;
     } else if (response.status === 400) {
         const data = await response.json();
         alert(data.message);

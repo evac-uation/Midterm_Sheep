@@ -11,27 +11,34 @@ const sheepProperties = [
     {
         name: "Fluffy Sheep",
         woolPerClick: 10,
-        cost: 20
+        cost: 20,
+        image: 'sheep_fluffy.png',
     },
     {
         name: "Silver Sheep",
         woolPerClick: 20,
-        cost: 40
+        cost: 40,
+        image: 'sheep_silverr.png',
+        
     },
     {
         name: "Golden Sheep",
         woolPerClick: 40,
-        cost: 80
+        cost: 80,
+        image: 'sheep_golden.png',
     },
     {
         name: "Jester Sheep",
         woolPerClick: 80,
-        cost: 160
+        cost: 160,
+        image: 'sheep_jester.png',
     },
+
     {
         name: "King Sheep",
         woolPerClick: 160,
-        cost: 320
+        cost: 320,
+        image: 'sheep_king.png',
     },
 ];
 
