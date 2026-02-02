@@ -1,7 +1,7 @@
 const express = require("express");
 const cookieParser = require('cookie-parser');
 const app = express();
-const PORT = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.static("public"));
@@ -129,6 +129,6 @@ app.delete("/api/delete", (req, res) => {
     res.json(games);
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
 });
