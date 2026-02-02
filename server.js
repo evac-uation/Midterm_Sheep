@@ -83,6 +83,9 @@ app.post("/api/buy/:index", (req, res) => {
     res.sendStatus(404);  
 });
 
+// The secret end points to reset all games.
+// Go to page http://localhost:3000/api/reset in browser 
+// to delete all game data.
 app.get("/api/reset", (req, res) => {
     Object.keys(games).forEach(key => {
         delete games[key];

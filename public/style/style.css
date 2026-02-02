@@ -53,6 +53,10 @@ body{
     border-radius: 10px;
 }
 
+.datapage{
+  background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8-BVuqpmdlTXkg4XaFeF5SvBf9uu8sE3tdw&s);
+}
+
 .shop {
     position: fixed;
     left: 60vw; 
