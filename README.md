@@ -1,4 +1,5 @@
 # Midterm_Sheep
+Render URL: https://midterm-sheep-1.onrender.com/
 
 1. What challenge you chose.
 I made a tycoon-inspired sheep clicker game. The player clicks a moving sheep in the farm to collect wool, which can be used to upgrade their sheep. Upgraded sheep produce more wool per click.
