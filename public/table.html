@@ -7,17 +7,70 @@
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="https://use.typekit.net/gge4lkp.css">
 </head>
-<body class="datapage">
+<body style="color:white" class="datapage">
   <div class="farmhandsans">
         <table>
              <thead>
                 <tr>
                     <th>Player</th>
-                    <th>Level</th>
+                    <th>Wool</th>
+                    <th>Collection count</th>
+                    <th>Sheep</th>
+                    <th/>
                 </tr>
             </thead>
-            <tbody/>
+            <tbody id="userTable"/>
         </table>
     </div>
+
+    <script>
+        function getCookie(name) {
+            const cookies = document.cookie.split("; ");
+            for (let c of cookies) {
+                const [key, value] = c.split("=");
+                if (key === name) return decodeURIComponent(value);
+            }
+            return null;
+        }
+
+        const savedName = getCookie("username");
+
+        async function loadGames() {        
+            const response = await fetch('/api/games');
+            const data = await response.json();
+            var tableHtml = '';
+            for (const [user, game] of Object.entries(data)) {
+                if (user == savedName) {
+                    const rowHtml = `<tr><td>${user}</td><td>${game.wool}</td><td>${game.collections}</td><td>${game.sheep.name}</td><td></td></tr>`;
+                    tableHtml += rowHtml;
+                } else {
+                    const rowHtml = `<tr><td>${user}</td><td>${game.wool}</td><td>${game.collections}</td><td>${game.sheep.name}</td><td><button onClick="deleteGame('${user}');">Delete</button></td></tr>`;
+                    tableHtml += rowHtml;
+                }
+            }
+            const tableBody = document.getElementById('userTable');
+            tableBody.innerHTML = tableHtml;
+        }
+
+        async function deleteGame(u) {
+            var response = await fetch(`/api/delete?user=${u}`, {method: "DELETE"});
+            var data = await response.json();
+            var tableHtml = '';
+            for (const [user, game] of Object.entries(data)) {
+                if (user == savedName) {
+                    const rowHtml = `<tr><td>${user}</td><td>${game.wool}</td><td>${game.collections}</td><td>${game.sheep.name}</td><td></td></tr>`;
+                    tableHtml += rowHtml;
+                } else {
+                    const rowHtml = `<tr><td>${user}</td><td>${game.wool}</td><td>${game.collections}</td><td>${game.sheep.name}</td><td><button onClick="deleteGame('${user}');">Delete</button></td></tr>`;
+                    tableHtml += rowHtml;
+                }
+            }
+            const tableBody = document.getElementById('userTable');
+            tableBody.innerHTML = tableHtml;
+        }
+
+        loadGames();
+    </script>
+
 </body>
 </html>

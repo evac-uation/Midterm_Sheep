@@ -41,6 +41,10 @@ app.get("/api/sheep", (req, res) => {
     res.json(sheepProperties);
 });
 
+app.get("/api/games", (req, res) => {
+    res.json(games);
+});
+
 app.get("/api/game", (req, res) => {
     const username = req.cookies.username;
     if (username in games) {
@@ -101,7 +105,14 @@ app.delete("/api/deletegame", (req, res) => {
     res.sendStatus(200);
 });
 
+app.delete("/api/delete", (req, res) => {
+    const username = req.query.user;
+    if (username in games) {
+        delete games[username];
+    }
+    res.json(games);
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
-

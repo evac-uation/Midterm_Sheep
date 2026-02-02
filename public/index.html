@@ -20,6 +20,14 @@
 <div class="shop" id="greeting">
     <div><a href="table.html"><img class="info" src="images/info.png"></a></div>
     <h1 id="farmTitle" class="farmhandreg">What is your name?</h1>
+
+    <form action="/action_page.php">
+        <input type="radio" id="normal" name="diff" value="Normal" onclick="setNormal();">
+        <label for="normal">Normal</label><br>
+        <input type="radio" id="hard" name="diff" value="Hard" onclick="setHard();">
+        <label for="hard">Hard</label><br>
+    </form>
+
     <p>
         <button id="resetName">Reset Name</button>
         <button id="deletegame" onclick="deleteCurrentGame();">Delete My Game</button>

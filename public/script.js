@@ -17,6 +17,13 @@ function setCookie(name, value, days) {
         "; path=/";
 }
 
+// get the query string from the current URL
+const queryString = window.location.search;
+//parse the paraemeters
+const urlParams = new URLSearchParams(queryString);
+//extract specific values
+const difficulty = urlParams.get('difficulty');
+
 
 const savedName = getCookie("username");
 const farmTitle = document.getElementById("farmTitle");
@@ -33,6 +40,10 @@ const sheepDisplay = document.getElementById("sheepDisplay");
 const perClickDisplay = document.getElementById("perClickDisplay");
 const collectionDisplay = document.getElementById("collectionDisplay");
 const sheep = document.getElementById("sheep");
+
+if (difficulty == 'hard') {
+    sheep.style.scale=0.5;
+}
 
 if (savedName) {
     farmTitle.textContent = `${savedName}'s Farm`;
@@ -68,8 +79,16 @@ resetName.addEventListener("click", () => {
 
 var game = null;
 
+function setNormal() {
+    sheep.style.scale=1;
+}
+
+function setHard() {
+    sheep.style.scale=0.5;
+}
+
 async function loadSheep() {        
-    const response = await fetch('/api/sheep');
+    const response = await fetch("/api/sheep");
     const data = await response.json();
     var tableHtml = '';
     data.forEach((item, index) => {
