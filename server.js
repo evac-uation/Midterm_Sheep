@@ -7,6 +7,7 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(cookieParser());
 
+//Properties of all the different kinds of sheep
 const sheepProperties = [
     {
         name: "Fluffy Sheep",
@@ -42,20 +43,24 @@ const sheepProperties = [
     },
 ];
 
+//Dictionary of all users and their game statuses
 const games = {};
 
+//Return information about all sheep types
 app.get("/api/sheep", (req, res) => {
     res.json(sheepProperties);
 });
 
+//Return information about all players' statuses
 app.get("/api/games", (req, res) => {
     res.json(games);
 });
 
+//Return status of the current user
 app.get("/api/game", (req, res) => {
     const username = req.cookies.username;
     if (username in games) {
-        // Exisiting user
+        // Existing user
         res.json(games[username]);
     } else {
         // New user
@@ -65,6 +70,7 @@ app.get("/api/game", (req, res) => {
     }  
 });
 
+//Update game status when player collects wool
 app.put("/api/collect", (req, res) => {
     const username = req.cookies.username;
     if (username in games) {
@@ -77,6 +83,7 @@ app.put("/api/collect", (req, res) => {
     res.sendStatus(404);
 });
 
+//Update game status when player buys sheep
 app.post("/api/buy/:index", (req, res) => {
     const username = req.cookies.username;
     if (username in games) {
@@ -94,9 +101,8 @@ app.post("/api/buy/:index", (req, res) => {
     res.sendStatus(404);  
 });
 
-// The secret end points to reset all games.
-// Go to page http://localhost:3000/api/reset in browser 
-// to delete all game data.
+// The secret page to reset all games...
+// Go to http://localhost:3000/api/reset to delete ALL game data.
 app.get("/api/reset", (req, res) => {
     Object.keys(games).forEach(key => {
         delete games[key];
@@ -104,6 +110,7 @@ app.get("/api/reset", (req, res) => {
     res.sendStatus(200);
 });
 
+// Delete current player
 app.delete("/api/deletegame", (req, res) => {
     const username = req.cookies.username;
     if (username in games) {
@@ -112,6 +119,8 @@ app.delete("/api/deletegame", (req, res) => {
     res.sendStatus(200);
 });
 
+
+// Delete chosen player
 app.delete("/api/delete", (req, res) => {
     const username = req.query.user;
     if (username in games) {

@@ -1,3 +1,4 @@
+//Get cookie
 function getCookie(name) {
     const cookies = document.cookie.split("; ");
     for (let c of cookies) {
@@ -7,6 +8,7 @@ function getCookie(name) {
     return null;
 }
 
+//Set cookie
 function setCookie(name, value, days) {
     const date = new Date();
     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
@@ -21,7 +23,7 @@ function setCookie(name, value, days) {
 const queryString = window.location.search;
 //parse the paraemeters
 const urlParams = new URLSearchParams(queryString);
-//extract specific values
+//extract difficulty value
 const difficulty = urlParams.get('difficulty');
 
 
@@ -41,6 +43,7 @@ const perClickDisplay = document.getElementById("perClickDisplay");
 const collectionDisplay = document.getElementById("collectionDisplay");
 const sheep = document.getElementById("sheep");
 
+//Adjust sheep size according to difficulty
 if (difficulty == 'hard') {
     sheep.style.scale=0.5;
     document.getElementById("hard").checked = true;
@@ -50,18 +53,21 @@ if (difficulty == 'hard') {
 }
 
 if (savedName) {
+    //username already exists in cookie
     farmTitle.textContent = `${savedName}'s Farm`;
     nameForm.style.display = "none";
     resetName.style.display = "block";
     deleteGame.style.display = "block";
     loadGame();
 } else {
+    //no username
     nameForm.style.display = "block";
     resetName.style.display = "none";
     deleteGame.style.display = "none";
     woolDisplay.textContent = "0";
 }
 
+//when saveName button is clicked
 document.getElementById("saveName").addEventListener("click", () => {
     const nameValue = nameInput.value.trim();
     if (!nameValue) return;
@@ -74,6 +80,7 @@ document.getElementById("saveName").addEventListener("click", () => {
     loadGame();
 });
 
+//when resetName button is clicked
 resetName.addEventListener("click", () => {
     setCookie("username", '');
     nameForm.style.display = "block";
@@ -81,16 +88,20 @@ resetName.addEventListener("click", () => {
     window.location.reload();
 });
 
+//game status
 var game = null;
 
+//normal difficulty
 function setNormal() {
     sheep.style.scale=1;
 }
 
+//hard difficulty
 function setHard() {
     sheep.style.scale=0.5;
 }
 
+//get sheep types from server and populate table
 async function loadSheep() {        
     const response = await fetch("/api/sheep");
     const data = await response.json();
@@ -103,6 +114,7 @@ async function loadSheep() {
     tableBody.innerHTML = tableHtml;
 }
 
+//get status of current user
 async function loadGame() {        
     const response = await fetch('/api/game');
     const data = await response.json();
@@ -113,6 +125,7 @@ async function loadGame() {
     collectionDisplay.textContent = data.collections;
 }
 
+//delete current player
 async function deleteCurrentGame() {
     const response = await fetch("/api/deletegame", { method: "DELETE"});
     setCookie("username", '');
@@ -122,7 +135,7 @@ async function deleteCurrentGame() {
     window.location.reload();
 }
 
-
+//when user clicks the sheep to collect wool
 async function collectWool() {
     const response = await fetch("/api/collect", { method: "PUT"});
     if (response.status === 200) {
@@ -135,6 +148,7 @@ async function collectWool() {
 
 sheep.addEventListener("click", collectWool);
 
+//when user buys sheep
 async function buySheep(index) {
     const response = await fetch(`/api/buy/${index}`, { method: "POST"});
     if (response.status === 200) {
